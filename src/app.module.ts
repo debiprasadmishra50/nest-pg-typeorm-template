@@ -15,7 +15,6 @@ import { MailModule } from "./mail/mail.module";
 import { PostgreSQLDatabaseModule } from "./database/postgresql.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
-import { randomBytes } from "crypto";
 import { MongooseDatabaseModule } from "./database/mongoose.module";
 
 /**
