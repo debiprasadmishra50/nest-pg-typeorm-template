@@ -39,6 +39,7 @@ $ yarn install
 4. To receive emails with contents, create your preferred templates with styles
 5. Have `todohighlight` VsCode extension and execute VsCode command by pressing `Cmd + Shift + P`
    <br/><br/>`TODO-Highlight: List Highlighted Annotations`
+6. Select for `FIXME:` annotations, and select which DB connection you prefer. update the same on the respective files
 
 ## Running the app
 
