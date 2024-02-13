@@ -63,29 +63,14 @@ async function bootstrap() {
       hsts: {
         includeSubDomains: true,
         preload: true,
-        maxAge: 63072000,
+        maxAge: 63072000, // 2 years in seconds
       },
       contentSecurityPolicy: {
         useDefaults: true,
         directives: {
-          defaultSrc: [
-            "'self'",
-            // "data:",
-            // "blob:",
-            "https://polyfill.io",
-            "https://*.cloudflare.com",
-            "http://127.0.0.1:3000/",
-            // "ws:",
-          ],
+          defaultSrc: ["'self'", "https://polyfill.io", "https://*.cloudflare.com", "http://127.0.0.1:3000/"],
           baseUri: ["'self'"],
-          scriptSrc: [
-            "'self'",
-            "http://127.0.0.1:3000/",
-            "https://*.cloudflare.com",
-            "https://polyfill.io",
-            // "http:",
-            // "data:",
-          ],
+          scriptSrc: ["'self'", "http://127.0.0.1:3000/", "https://*.cloudflare.com", "https://polyfill.io"],
           styleSrc: ["'self'", "https:", "http:", "'unsafe-inline'"],
           imgSrc: ["'self'", "data:", "blob:"],
           fontSrc: ["'self'", "https:", "data:"],
@@ -94,8 +79,29 @@ async function bootstrap() {
           frameSrc: ["'self'"],
         },
       },
+      dnsPrefetchControl: { allow: false }, // Changed based on the last middleware to disable DNS prefetching
+      frameguard: { action: "deny" },
+      hidePoweredBy: true,
+      ieNoOpen: true,
+      noSniff: true,
+      permittedCrossDomainPolicies: { permittedPolicies: "none" },
+      referrerPolicy: { policy: "no-referrer" },
+      xssFilter: true,
+      crossOriginEmbedderPolicy: true,
+      crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+      crossOriginResourcePolicy: { policy: "same-site" },
+      originAgentCluster: true,
     }),
   );
+
+  app.use((req: any, res: any, next: any) => {
+    res.setHeader(
+      "Permissions-Policy",
+      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=()',
+    );
+    next();
+  });
+
   app.use(xssClean());
   app.use(hpp());
 
