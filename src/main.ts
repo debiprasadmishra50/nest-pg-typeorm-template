@@ -8,32 +8,32 @@ import helmet from "helmet";
 import csurf from "csurf";
 import xssClean from "xss-clean";
 import hpp from "hpp";
-import * as express from "express";
+import { json, urlencoded } from "express";
 import { ConfigService } from "@nestjs/config";
 
 // FIXME:
 import mongoSanitize from "express-mongo-sanitize";
 
 import { AppModule } from "./app.module";
+import { NestExpressApplication } from "@nestjs/platform-express";
 
 /**
  * function for bootstraping the nest application
  */
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
     bodyParser: true,
     logger: ["error", "fatal", "log", "verbose", "warn", "debug"],
   });
   const configService = app.get<ConfigService>(ConfigService);
-  const expressApp = app.getHttpAdapter() as unknown as express.Application;
+  // const expressApp = app.getHttpAdapter() as unknown as express.Application;
 
   app.setGlobalPrefix("/api");
   app.enableVersioning({
     defaultVersion: "1",
     type: VersioningType.URI,
   });
-  app;
 
   app.enableCors();
   app.use(cookieParser());
@@ -42,11 +42,11 @@ async function bootstrap() {
   // FIXME: Use only when use MongoDB
   // app.use(mongoSanitize());
 
-  app.use(express.json({ limit: "50kb" }));
-  app.use(express.urlencoded({ extended: true, limit: "50kb" }));
+  app.use(json({ limit: "50kb" }));
+  app.use(urlencoded({ extended: true, limit: "50kb" }));
 
-  expressApp.disable("x-powered-by"); // provide an extra layer of obsecurity to reduce server fingerprinting.
-  expressApp.set("trust proxy", 1); // trust first proxy
+  app.disable("x-powered-by"); // provide an extra layer of obsecurity to reduce server fingerprinting.
+  app.set("trust proxy", 1); // trust first proxy
 
   const ignoreMethods =
     configService.get<string>("STAGE") == "dev"

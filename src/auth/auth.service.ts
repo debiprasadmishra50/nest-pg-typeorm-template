@@ -24,7 +24,7 @@ import { UpdateMyPasswordDto } from "./dto/update-password.dto";
 import { User } from "../user/entities/user.entity";
 import { User as UserDoc } from "../user/entities/user.schema";
 import { argon2hash, argon2verify } from "../utils/hashes/argon2";
-import { sha256, tokenCreate } from "src/utils/hashes/hash";
+import { sha256, tokenCreate } from "../utils/hashes/hash";
 
 /**
  * This service contain contains all methods and business logic for authentication such as login, signup, password reset, etc.
@@ -58,8 +58,9 @@ export class AuthService {
    * @param configService
    */
   constructor(
+    // FIXME:
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectModel(UserDoc.name) private userModel: Model<UserDoc>,
+    // @InjectModel(UserDoc.name) private userModel: Model<UserDoc>,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
     private readonly configService: ConfigService,
@@ -89,10 +90,10 @@ export class AuthService {
 
       user = await this.userRepository.save(user);
 
-      const userDoc = await this.userModel.create({ ...createUserDto, password });
+      // FIXME:
+      // const userDoc = await this.userModel.create({ ...createUserDto, password });
 
       this.logger.log("User Created");
-      console.log(userDoc);
 
       this.logger.log("Login the user and send the token and mail");
       const token: string = await this.signTokenSendEmailAndSMS(user, req, activateToken);

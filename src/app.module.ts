@@ -22,8 +22,8 @@ import { MongooseDatabaseModule } from "./database/mongoose.module";
  *
  * Here, feature modules imported are - DatabaseModule, AuthModule, MailModule and UserModule.
  * other modules are :
- *      ConfigModule - enables us to access environment variables application wide.
- *      TypeOrmModule - it is an ORM and enables easy access to database.
+ *      {@link ConfigModule} - enables us to access environment variables application wide.
+ *      {@link TypeOrmModule} - it is an ORM and enables easy access to database.
  */
 @Module({
   imports: [
@@ -31,9 +31,9 @@ import { MongooseDatabaseModule } from "./database/mongoose.module";
       envFilePath: [`.env.stage.${process.env.STAGE}`],
       isGlobal: true,
       //   FIXME:
-      //   validate, // For Approach 1 using Class Validator
+      // validate, // For Approach 1 using Class Validator
       validationSchema: envSchema,
-      //   validationOptions: { allowUnknown: false, abortEarly: true },
+      // validationOptions: { allowUnknown: false, abortEarly: true },
     }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
@@ -70,7 +70,7 @@ import { MongooseDatabaseModule } from "./database/mongoose.module";
     }),
     // FIXME: Select Either of them
     PostgreSQLDatabaseModule,
-    MongooseDatabaseModule,
+    // MongooseDatabaseModule,
     AuthModule,
     MailModule,
     UserModule,

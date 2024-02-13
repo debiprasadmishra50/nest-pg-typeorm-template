@@ -10,24 +10,24 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { MailModule } from "../mail/mail.module";
 import { GoogleStrategy } from "./strategies/google.strategy";
 import { MongooseModule } from "@nestjs/mongoose";
-import { User } from "src/user/entities/user.entity";
-import { User as UserDoc, UserSchema } from "src/user/entities/user.schema";
+import { User } from "../user/entities/user.entity";
+// import { User as UserDoc, UserSchema } from "../user/entities/user.schema";
 
 /**
  * It is a feature module where we keep the controller, service and other code related to authentication and  we import other modules and configure modules and packages that are being used in this module.
  *
  * Here, feature modules imported are - DatabaseModule, AuthModule, MailModule and UserModule.
  * other modules are :
- *      TypeOrmModule - it is an ORM and enables easy access to database.
- *      PassportModule - it enables us to setup multiple types of authentication.
- *      JwtModule - it is used for token creation for authentication.
+ *      {@link TypeOrmModule} - it is an ORM and enables easy access to database.
+ *      {@link PassportModule} - it enables us to setup multiple types of authentication.
+ *      {@link JwtModule} - it is used for token creation for authentication.
  */
 @Module({
   imports: [
     ConfigModule,
     // FIXME:
     TypeOrmModule.forFeature([User]),
-    MongooseModule.forFeature([{ name: UserDoc.name, schema: UserSchema }]),
+    // MongooseModule.forFeature([{ name: UserDoc.name, schema: UserSchema }]),
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

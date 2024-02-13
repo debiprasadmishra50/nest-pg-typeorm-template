@@ -18,7 +18,7 @@ import { join } from "path";
           return {
             transport: {
               host: configService.get<string>("EMAIL_HOST"),
-              port: configService.get<string>("EMAIL_PORT"),
+              port: +configService.get<string>("EMAIL_PORT"),
               auth: {
                 user: configService.get<string>("EMAIL_USERNAME"),
                 pass: configService.get<string>("EMAIL_PASSWORD"),

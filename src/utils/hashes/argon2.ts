@@ -9,6 +9,8 @@ import { randomBytes } from "crypto";
  * @author <a href="https://debiprasadmishra.net">Debi Prasad Mishra</a>
  */
 const argon2hash = async (password: string): Promise<string> => {
+  if (!password) return;
+
   const hash = await argon2.hash(password, {
     type: argon2.argon2id,
     hashLength: 32,
@@ -31,6 +33,8 @@ const argon2hash = async (password: string): Promise<string> => {
  * @author <a href="https://debiprasadmishra.net">Debi Prasad Mishra</a>
  */
 const argon2verify = async (hash: string, password: string): Promise<boolean> => {
+  if (!hash || !password) return;
+
   return await argon2.verify(hash, password, { type: argon2.argon2id });
 };
 

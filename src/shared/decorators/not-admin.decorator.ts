@@ -13,7 +13,7 @@ export function IsNotAdmin(validationOptions?: ValidationOptions) {
       },
       validator: {
         validate(value: any) {
-          return value.toLowerCase() !== "admin";
+          return value?.toLowerCase() !== "admin";
         },
       },
     });

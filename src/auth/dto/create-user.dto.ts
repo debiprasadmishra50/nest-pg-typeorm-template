@@ -10,23 +10,23 @@ import {
   MinLength,
   Validate,
 } from "class-validator";
-import { IsNotAdmin } from "src/shared/decorators/not-admin.decorator";
+import { IsNotAdmin } from "../../shared/decorators/not-admin.decorator";
 
 export class CreateUserDto {
   /**
-   * FirstName of user
+   * First Name of user
    */
   @ApiProperty({ required: true, description: "First Name of user" })
-  @IsString({ message: "First name must be a string" })
-  @IsNotEmpty({ message: "First name can not be empty" })
+  @IsNotAdmin()
   @MaxLength(20, { message: "First Name exceeds given length" })
   @MinLength(1, { message: "First name has to be of length 1" })
-  @IsNotAdmin()
   @IsAlpha()
+  @IsString({ message: "First name must be a string" })
+  @IsNotEmpty({ message: "First name can not be empty" })
   firstName: string;
 
   /**
-   * FirstName of user
+   * Last Name of user
    */
   @ApiProperty({ required: true, description: "Last Name of user" })
   @IsString({ message: "Last name must be a string" })

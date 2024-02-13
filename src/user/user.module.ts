@@ -18,8 +18,9 @@ import { MongooseModule } from "@nestjs/mongoose";
 @Module({
   imports: [
     AuthModule,
+    // FIXME:
     TypeOrmModule.forFeature([User]),
-    MongooseModule.forFeature([{ name: UserDoc.name, schema: UserSchema }]),
+    // MongooseModule.forFeature([{ name: UserDoc.name, schema: UserSchema }]),
     MailModule,
   ],
   controllers: [UserController],

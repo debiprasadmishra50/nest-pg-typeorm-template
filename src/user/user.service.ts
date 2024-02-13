@@ -17,12 +17,15 @@ export class UserService {
   private readonly logger = new Logger("USER");
 
   constructor(
+    // FIXME:
     @InjectRepository(User) private userRepository: Repository<User>,
-    @InjectModel(UserDoc.name) private userModel: Model<UserDoc>,
+    // @InjectModel(UserDoc.name) private userModel: Model<UserDoc>,
     private readonly mailService: MailService,
   ) {}
-  async getAllUsers(): Promise<UserDoc[]> {
-    const users = await this.userModel.find().exec();
+  // async getAllUsers(): Promise<UserDoc[]> {
+  async getAllUsers(): Promise<User[]> {
+    // const users = await this.userModel.find().exec();
+    const users = await this.userRepository.find();
 
     return users;
   }
