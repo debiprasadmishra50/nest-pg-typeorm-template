@@ -1,7 +1,6 @@
 import { ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
-import { getConnectionManager } from "typeorm";
 import cookieParser from "cookie-parser";
 import compression from "compression";
 import helmet from "helmet";
@@ -16,11 +15,17 @@ import mongoSanitize from "express-mongo-sanitize";
 
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
+import dataSource from "./ormconfig";
 
 /**
  * function for bootstraping the nest application
  */
 async function bootstrap() {
+  if (!dataSource.isInitialized) {
+    await dataSource.initialize();
+  }
+  await dataSource.runMigrations();
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
     bodyParser: true,
@@ -133,10 +138,6 @@ async function bootstrap() {
     ####### Migrations #######
     ##########################
   */
-  // const connectionManager = getConnectionManager();
-  // console.log(connectionManager.connections);
-  // const connection = connectionManager.get("default");
-  // await connection.runMigrations();
 
   const port = configService.get<string>("PORT") || 3000;
   await app.listen(port, () => {
