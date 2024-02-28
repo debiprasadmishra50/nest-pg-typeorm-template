@@ -21,6 +21,7 @@ This is a template that includes the authentication, authorisation, google-authe
 11. Authorization (RBAC)
 12. Throttler Setup
 13. Server and security Config
+14. Migrations
 
 - All implemented for a generic User Schema
 - signup, reset password, forget password etc are implemented too along with 2FA for emails
@@ -28,7 +29,7 @@ This is a template that includes the authentication, authorisation, google-authe
 ## Installation
 
 ```bash
-$ yarn install
+$ npm install
 ```
 
 ## Pre-Configuration
@@ -45,19 +46,19 @@ $ yarn install
 
 ```bash
 # development
-$ yarn run start
+$ npm run start
 
 # watch mode
-$ yarn run start:dev
+$ npm run start:dev
 
 # staging mode
-$ yarn run start:staging
+$ npm run start:staging
 
 # uat mode
-$ yarn run start:uat
+$ npm run start:uat
 
 # production mode
-$ yarn run start:prod
+$ npm run start:prod
 ```
 
 ## Swagger Docs
@@ -68,14 +69,22 @@ $ yarn run start:prod
 
 ```bash
 # unit tests
-$ yarn run test
+$ npm run test
 
 # e2e tests
-$ yarn run test:e2e
+$ npm run test:e2e
 
 # test coverage
-$ yarn run test:cov
+$ npm run test:cov
 ```
+
+## Migration
+
+      Avoid synchronizing with the database for every DB change, instead use a migration system to prevent loss of data or any unwanted behavior
+
+1. Perform any schema change in any entity file
+2. Run command `npm run migration:generate` to generate a new migration file with changes from your entities
+3. Run `npm run migration:run` to apply OR restart the app to run the migration automatically and watch the change in database
 
 ## Support
 

@@ -21,6 +21,11 @@ import dataSource from "./ormconfig";
  * function for bootstraping the nest application
  */
 async function bootstrap() {
+  /* FIXME:
+    ##########################
+    ####### Migrations #######
+    ##########################
+  */
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
   }
@@ -132,12 +137,6 @@ async function bootstrap() {
       },
     });
   }
-
-  /* FIXME:
-    ##########################
-    ####### Migrations #######
-    ##########################
-  */
 
   const port = configService.get<string>("PORT") || 3000;
   await app.listen(port, () => {
