@@ -1,0 +1,2 @@
+echo Husky Ran
+echo `git branch --show-current`

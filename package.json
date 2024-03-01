@@ -27,7 +27,8 @@
     "migration:create": "npx typeorm migration:create ./src/database/migrations/$npm_package_name",
     "migration:generate": "npm run typeorm -- migration:generate ./src/database/migrations/$npm_package_name -p",
     "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.9.1",
@@ -91,6 +92,7 @@
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "husky": "^9.0.11",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
     "source-map-support": "^0.5.21",

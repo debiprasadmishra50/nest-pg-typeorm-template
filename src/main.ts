@@ -21,11 +21,9 @@ import dataSource from "./ormconfig";
  * function for bootstraping the nest application
  */
 async function bootstrap() {
-  /* FIXME:
-    ##########################
-    ####### Migrations #######
-    ##########################
-  */
+  /*
+   * Run Migrations
+   */
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
   }
