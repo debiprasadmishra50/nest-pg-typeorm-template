@@ -78,9 +78,15 @@ async function bootstrap() {
         directives: {
           defaultSrc: ["'self'", "https://polyfill.io", "https://*.cloudflare.com", "http://127.0.0.1:3000/"],
           baseUri: ["'self'"],
-          scriptSrc: ["'self'", "http://127.0.0.1:3000/", "https://*.cloudflare.com", "https://polyfill.io"],
+          scriptSrc: [
+            "'self'",
+            "http://127.0.0.1:3000/",
+            "https://*.cloudflare.com",
+            "https://polyfill.io",
+            `https: 'unsafe-inline'`,
+          ],
           styleSrc: ["'self'", "https:", "http:", "'unsafe-inline'"],
-          imgSrc: ["'self'", "data:", "blob:"],
+          imgSrc: ["'self'", "data:", "blob:", "validator.swagger.io"],
           fontSrc: ["'self'", "https:", "data:"],
           childSrc: ["'self'", "blob:"],
           styleSrcAttr: ["'self'", "'unsafe-inline'", "http:"],
