@@ -1,2 +1,1 @@
-echo Husky Ran
-echo `git branch --show-current`
+echo [+] Current Branch is: `git branch --show-current`
