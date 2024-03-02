@@ -1,17 +1,18 @@
 {
-    "collection": "@nestjs/schematics",
-    "sourceRoot": "src",
-    "plugins": [
-        {
-            "name": "@nestjs/swagger",
-            "options": {
-                "classValidatorShim": true,
-                "introspectComments": true
-            }
-        }
-    ],
-    "compilerOptions": {
-        "assets": ["mail/templates/**/*.pug"],
-        "watchAssets": true
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "plugins": [
+    {
+      "name": "@nestjs/swagger",
+      "options": {
+        "classValidatorShim": true,
+        "introspectComments": true
+      }
     }
+  ],
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "assets": [{ "include": "mail/templates/**/*.pug", "outDir": "dist/src" }],
+    "watchAssets": true
+  }
 }
