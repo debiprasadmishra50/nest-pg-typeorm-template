@@ -16,6 +16,7 @@ import { PostgreSQLDatabaseModule } from "./database/postgresql.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
 import { MongooseDatabaseModule } from "./database/mongoose.module";
+import { winstonLoggerConfig } from "./winston.config";
 
 /**
  * It is the root module for the application in we import all feature modules and configure modules and packages that are common in feature modules. Here we also configure the middlewares.
@@ -45,29 +46,7 @@ import { MongooseDatabaseModule } from "./database/mongoose.module";
         },
       ],
     }),
-    WinstonModule.forRoot({
-      levels: winston.config.npm.levels,
-      format: winston.format.combine(
-        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
-        winston.format.json(),
-        winston.format.prettyPrint(),
-        winston.format.splat(),
-        winston.format.colorize(),
-      ),
-      transports: [
-        new winston.transports.File({
-          filename: `logs/application-errors/${new Date()
-            .toISOString()
-            .split("T")[0]
-            .replace(/-/g, "/")}/error.log`,
-          level: "error",
-        }),
-        new winston.transports.File({
-          filename: `logs/${new Date().toISOString().split("T")[0].replace(/-/g, "/")}/application.log`,
-          level: "log",
-        }),
-      ],
-    }),
+    WinstonModule.forRoot(winstonLoggerConfig),
     // FIXME: Select Either of them
     PostgreSQLDatabaseModule,
     // MongooseDatabaseModule,
