@@ -1,5 +1,5 @@
-import { ValidationPipe, VersioningType } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
+import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from "@nestjs/common";
+import { NestFactory, Reflector } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import cookieParser from "cookie-parser";
 import compression from "compression";
@@ -120,6 +120,7 @@ async function bootstrap() {
   app.use(hpp());
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   /* FIXME:
     ##########################

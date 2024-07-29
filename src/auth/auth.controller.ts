@@ -49,7 +49,7 @@ import { GoogleAuthGuard } from "./guards/google-auth.guard";
  * it creates a route - "/auth"
  */
 @Controller("auth")
-@UseInterceptors(ClassSerializerInterceptor)
+// @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -74,6 +74,7 @@ export class AuthController {
   @ApiConflictResponse({ description: "In case of email already exists in the database" })
   async signup(@Body() createUserDto: CreateUserDto, @Req() req: Request) {
     const { user, token } = await this.authService.signup(createUserDto, req);
+
     return {
       status: "success",
       user,

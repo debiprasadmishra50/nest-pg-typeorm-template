@@ -32,10 +32,16 @@ import { UserService } from "./user.service";
 // @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags("User")
 @ApiBearerAuth()
+@ApiUnauthorizedResponse({ description: "In case user is not logged in" })
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get("all")
+  @ApiOperation({
+    description: "Api to fetch details of all users.",
+    summary: "Api to fetch details of all users.",
+  })
+  @ApiOkResponse({ description: "Get list of all users in Database", type: User, isArray: true })
   async getAllUsers() {
     const users = await this.userService.getAllUsers();
 
@@ -56,7 +62,6 @@ export class UserController {
     summary: "Api to fetch details of logged in user.",
   })
   @ApiOkResponse({ description: "Get data about current logged in user", type: User })
-  @ApiUnauthorizedResponse({ description: "In case user is not logged in" })
   async getUser(@GetUser() user: User): Promise<User> {
     return user;
   }
@@ -76,7 +81,6 @@ export class UserController {
     summary: "Api to update user details.",
   })
   @ApiOkResponse({ description: "Update User Data", type: UpdatedUserResponseDto })
-  @ApiUnauthorizedResponse({ description: "In case user is not logged in" })
   @ApiForbiddenResponse({ description: "If the account is not activated" })
   async updateUserDetails(@Body() updateUserDto: UpdateUserDto, @GetUser() user: User) {
     const updatedUser = await this.userService.updateUserData(updateUserDto, user);
