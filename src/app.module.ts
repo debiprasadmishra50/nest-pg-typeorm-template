@@ -3,19 +3,15 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { APP_GUARD } from "@nestjs/core";
 import { WinstonModule } from "nest-winston";
-import * as winston from "winston";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { LoggerMiddleware } from "./shared/middlewares/logger.middleware";
-//   FIXME:
-// import { validate } from "./env.validation";
 import { envSchema } from "./utils/env.validation";
 import { AuthModule } from "./auth/auth.module";
 import { MailModule } from "./mail/mail.module";
 import { PostgreSQLDatabaseModule } from "./database/postgresql.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
-import { MongooseDatabaseModule } from "./database/mongoose.module";
 import { winstonLoggerConfig } from "./winston.config";
 
 /**
@@ -31,8 +27,6 @@ import { winstonLoggerConfig } from "./winston.config";
     ConfigModule.forRoot({
       envFilePath: [`.env.stage.${process.env.STAGE}`],
       isGlobal: true,
-      //   FIXME:
-      // validate, // For Approach 1 using Class Validator
       validationSchema: envSchema,
       // validationOptions: { allowUnknown: false, abortEarly: true },
     }),
@@ -47,9 +41,7 @@ import { winstonLoggerConfig } from "./winston.config";
       ],
     }),
     WinstonModule.forRoot(winstonLoggerConfig),
-    // FIXME: Select Either of them
     PostgreSQLDatabaseModule,
-    // MongooseDatabaseModule,
     AuthModule,
     MailModule,
     UserModule,

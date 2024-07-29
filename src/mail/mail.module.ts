@@ -4,6 +4,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MailService } from "./mail.service";
 import { join } from "path";
+import { FROM_EMAIL } from "./constants";
 
 /**
  * It is a feature module where we keep the service and code related to mails. we import the nestjs mailer module and configure it to work with templates using pugAdapter.
@@ -25,7 +26,7 @@ import { join } from "path";
               },
             },
             defaults: {
-              from: "'no-reply' <info@your-org.io>",
+              from: `'no-reply' <${FROM_EMAIL}>`,
             },
             template: {
               dir: join(__dirname, "templates"),

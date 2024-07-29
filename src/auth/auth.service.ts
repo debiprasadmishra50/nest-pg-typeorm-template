@@ -11,8 +11,6 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { ConfigService } from "@nestjs/config";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { MailService } from "../mail/mail.service";
@@ -22,8 +20,6 @@ import { LoginUserDto } from "./dto/login-user.dto";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { UpdateMyPasswordDto } from "./dto/update-password.dto";
 import { User } from "../user/entities/user.entity";
-// FIXME:
-import { User as UserDoc } from "../user/entities/user.schema";
 import { argon2hash, argon2verify } from "../utils/hashes/argon2";
 import { sha256, tokenCreate } from "../utils/hashes/hash";
 import { InjectLogger } from "../shared/decorators/logger.decorator";
@@ -58,13 +54,11 @@ export class AuthService {
    * @param configService
    */
   constructor(
-    // FIXME:
     @InjectRepository(User) private userRepository: Repository<User>,
-    // @InjectModel(UserDoc.name) private userModel: Model<UserDoc>,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
     private readonly configService: ConfigService,
-    @InjectLogger() private readonly logger: Logger,
+    @InjectLogger() private readonly logger: Logger
   ) {
     this.FR_HOST = configService.get<string>(`FR_BASE_URL`);
   }
@@ -90,9 +84,6 @@ export class AuthService {
       user.activeToken = sha256(activateToken);
 
       user = await this.userRepository.save(user);
-
-      // FIXME:
-      // const userDoc = await this.userModel.create({ ...createUserDto, password });
 
       this.logger.log("User Created", "AuthService");
 

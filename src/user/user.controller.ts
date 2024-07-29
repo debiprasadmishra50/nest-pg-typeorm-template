@@ -45,8 +45,6 @@ export class UserController {
   async getAllUsers() {
     const users = await this.userService.getAllUsers();
 
-    console.log(users);
-
     return { status: "success", count: users.length, data: users };
   }
 
@@ -84,6 +82,7 @@ export class UserController {
   @ApiForbiddenResponse({ description: "If the account is not activated" })
   async updateUserDetails(@Body() updateUserDto: UpdateUserDto, @GetUser() user: User) {
     const updatedUser = await this.userService.updateUserData(updateUserDto, user);
+
     return { status: "success", data: updatedUser };
   }
 }

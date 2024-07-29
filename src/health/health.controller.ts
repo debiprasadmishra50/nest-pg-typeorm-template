@@ -5,9 +5,7 @@ import {
   HealthCheck,
   HealthCheckService,
   MemoryHealthIndicator,
-  // FIXME: Select ORM
   TypeOrmHealthIndicator,
-  // MongooseHealthIndicator,
 } from "@nestjs/terminus";
 
 @Controller("health")
@@ -15,20 +13,15 @@ import {
 export class HealthController {
   constructor(
     private health: HealthCheckService,
-    // FIXME: Select ORM
     private dbSQL: TypeOrmHealthIndicator,
-    // private dbNoSQL: MongooseHealthIndicator,
     private memory: MemoryHealthIndicator,
-    private configService: ConfigService,
+    private configService: ConfigService
   ) {}
 
   @Get("database")
   @HealthCheck()
   checkDatabase() {
-    return this.health.check([
-      () => this.dbSQL.pingCheck(this.configService.get<string>("DATABASE")),
-      // () => this.dbNoSQL.pingCheck(this.configService.get<string>("DATABASE")),
-    ]);
+    return this.health.check([() => this.dbSQL.pingCheck(this.configService.get<string>("DATABASE"))]);
   }
 
   @Get("memory")

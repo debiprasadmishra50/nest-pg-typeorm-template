@@ -9,7 +9,6 @@ const mockConfigValues = {
   DB_USER: "postgres",
   DB_PASSWORD: "sipusipu18",
   DATABASE: "nest-template",
-  DB_MONGO_URI: "mongodb://localhost:27017/test",
   JWT_SECRET: "my-super-secret-token-for-jwt",
   EXPIRES_IN: "10h",
   EMAIL_USERNAME: "b12a3670e34e58",

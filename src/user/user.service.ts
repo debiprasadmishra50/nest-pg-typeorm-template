@@ -2,29 +2,23 @@ import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
 import { User } from "./entities/user.entity";
 import { MailService } from "../mail/mail.service";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { User as UserDoc } from "../user/entities/user.schema";
+import { InjectLogger } from "../shared/decorators/logger.decorator";
 
 /**
  * This service contain contains methods and business logic related to user.
  */
 @Injectable()
 export class UserService {
-  private readonly logger = new Logger("USER");
-
   constructor(
-    // FIXME:
     @InjectRepository(User) private userRepository: Repository<User>,
-    // @InjectModel(UserDoc.name) private userModel: Model<UserDoc>,
-    private readonly mailService: MailService,
+    @InjectLogger() private readonly logger: Logger,
+    private readonly mailService: MailService
   ) {}
-  // async getAllUsers(): Promise<UserDoc[]> {
+
   async getAllUsers(): Promise<User[]> {
-    // const users = await this.userModel.find().exec();
     const users = await this.userRepository.find();
 
     return users;

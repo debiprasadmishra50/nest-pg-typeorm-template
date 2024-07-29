@@ -5,9 +5,6 @@ import { UserController } from "./user.controller";
 import { AuthModule } from "../auth/auth.module";
 import { MailModule } from "../mail/mail.module";
 import { User } from "./entities/user.entity";
-import { User as UserDoc, UserSchema } from "src/user/entities/user.schema";
-import { MongooseModule } from "@nestjs/mongoose";
-
 /**
  * It is a feature module where we keep the controller, service and other code related to user entity and  we import other modules and configure modules and packages that are being used in this module.
  *
@@ -16,13 +13,7 @@ import { MongooseModule } from "@nestjs/mongoose";
  *      TypeOrmModule - it is an ORM and enables easy access to database.
  */
 @Module({
-  imports: [
-    AuthModule,
-    // FIXME:
-    TypeOrmModule.forFeature([User]),
-    // MongooseModule.forFeature([{ name: UserDoc.name, schema: UserSchema }]),
-    MailModule,
-  ],
+  imports: [AuthModule, TypeOrmModule.forFeature([User]), MailModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [],

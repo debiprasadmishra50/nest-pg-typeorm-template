@@ -1,5 +1,6 @@
 import { MailerService } from "@nestjs-modules/mailer";
 import { Injectable } from "@nestjs/common";
+import { FROM_EMAIL, ORG_NAME } from "./constants";
 import { User } from "../user/entities/user.entity";
 
 @Injectable()
@@ -7,7 +8,7 @@ export class MailService {
   /**
    * Organization Name
    */
-  private _name: string = "YOUR ORG";
+  private _name: string = ORG_NAME;
 
   /**
    * getter function for Organization Name
@@ -27,7 +28,7 @@ export class MailService {
   /**
    * email address for sending mails
    */
-  private _from: string = "info@your-org.io";
+  private _from: string = FROM_EMAIL;
 
   /**
    * getter function for from - email address

@@ -1,4 +1,4 @@
-# NestJS Starter Template
+# NestJS Postgres Starter Template
 
 This is a template that includes the authentication, authorisation, google-authentication, mailing functionality along with database communication
 
@@ -10,18 +10,16 @@ This is a template that includes the authentication, authorisation, google-authe
 
 1. NestJS
 2. TypeORM
-3. MongooseODM
-4. PostgreSQL
-5. MongoDB
-6. HealthCheck(terminus)
-7. Joi
-8. Swagger / OpenAPI
-9. Mailer Client setup with Pug
-10. Authentication (JWT, Passport Local, Oauth2.0)
-11. Authorization (RBAC)
-12. Throttler Setup
-13. Server and security Config
-14. Migrations
+3. PostgreSQL
+4. HealthCheck(terminus)
+5. Joi
+6. Swagger / OpenAPI
+7. Mailer Client setup with Pug
+8. Authentication (JWT, Passport Local, Oauth2.0)
+9. Authorization (RBAC)
+10. Throttler Setup
+11. Server and security Config
+12. Migrations
 
 - All implemented for a generic User Schema
 - signup, reset password, forget password etc are implemented too along with 2FA for emails

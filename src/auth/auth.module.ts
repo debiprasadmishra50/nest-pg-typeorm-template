@@ -9,7 +9,6 @@ import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { MailModule } from "../mail/mail.module";
 import { GoogleStrategy } from "./strategies/google.strategy";
-import { MongooseModule } from "@nestjs/mongoose";
 import { User } from "../user/entities/user.entity";
 // import { User as UserDoc, UserSchema } from "../user/entities/user.schema";
 
@@ -25,9 +24,7 @@ import { User } from "../user/entities/user.entity";
 @Module({
   imports: [
     ConfigModule,
-    // FIXME:
     TypeOrmModule.forFeature([User]),
-    // MongooseModule.forFeature([{ name: UserDoc.name, schema: UserSchema }]),
     PassportModule.register({ defaultStrategy: "jwt" }),
     JwtModule.registerAsync({
       imports: [ConfigModule],

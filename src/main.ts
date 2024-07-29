@@ -9,10 +9,6 @@ import xssClean from "xss-clean";
 import hpp from "hpp";
 import { json, urlencoded } from "express";
 import { ConfigService } from "@nestjs/config";
-
-// FIXME:
-import mongoSanitize from "express-mongo-sanitize";
-
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import dataSource from "./ormconfig";
@@ -47,9 +43,6 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(compression());
 
-  // FIXME: Use only when use MongoDB
-  // app.use(mongoSanitize());
-
   app.use(json({ limit: "50kb" }));
   app.use(urlencoded({ extended: true, limit: "50kb" }));
 
@@ -64,7 +57,7 @@ async function bootstrap() {
     csurf({
       cookie: { httpOnly: true, secure: true },
       ignoreMethods,
-    }),
+    })
   );
   app.use(
     helmet({
@@ -105,13 +98,13 @@ async function bootstrap() {
       crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
       crossOriginResourcePolicy: { policy: "same-site" },
       originAgentCluster: true,
-    }),
+    })
   );
 
   app.use((req: any, res: any, next: any) => {
     res.setHeader(
       "Permissions-Policy",
-      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=()',
+      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=()'
     );
     next();
   });
