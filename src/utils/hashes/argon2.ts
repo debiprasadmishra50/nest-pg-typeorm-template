@@ -18,7 +18,6 @@ const argon2hash = async (password: string): Promise<string> => {
     memoryCost: 65536,
     timeCost: 10,
     salt: randomBytes(16),
-    saltLength: 16,
   });
 
   return hash;
@@ -35,7 +34,7 @@ const argon2hash = async (password: string): Promise<string> => {
 const argon2verify = async (hash: string, password: string): Promise<boolean> => {
   if (!hash || !password) return;
 
-  return await argon2.verify(hash, password, { type: argon2.argon2id });
+  return await argon2.verify(hash, password);
 };
 
 export { argon2hash, argon2verify };
