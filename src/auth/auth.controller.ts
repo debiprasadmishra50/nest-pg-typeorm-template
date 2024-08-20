@@ -10,7 +10,7 @@ import {
   UseGuards,
   Req,
   InternalServerErrorException,
-  ClassSerializerInterceptor,
+  // ClassSerializerInterceptor,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -291,7 +291,7 @@ export class AuthController {
   async updateMyPassword(@Body() updateMyPassword: UpdateMyPasswordDto, @GetUser() user: User) {
     const { user: updatedUser, token: newToken } = await this.authService.updateMyPassword(
       updateMyPassword,
-      user,
+      user
     );
 
     return { status: "success", user: updatedUser, token: newToken };

@@ -96,4 +96,18 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This App is [MIT licensed](LICENSE).
+
+
+## TODO
+1. Shortlived JWT Access Token
+2. Refresh Token
+3. Secret Manager
+4. S3 Bucket
+5. Caching
+6. Websockets
+7. SSE
+8. Logic of Google and Normal Login Edge Cases
+9. Improved Logging
+10. 
+
