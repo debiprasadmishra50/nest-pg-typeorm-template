@@ -112,7 +112,7 @@ async function bootstrap() {
   app.use(xssClean());
   app.use(hpp());
 
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({ transform: true, stopAtFirstError: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
   /* FIXME:

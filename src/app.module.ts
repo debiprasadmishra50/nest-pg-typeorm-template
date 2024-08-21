@@ -13,6 +13,7 @@ import { PostgreSQLDatabaseModule } from "./database/postgresql.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
 import { winstonLoggerConfig } from "./configs/winston.config";
+import { S3Module } from './s3/s3.module';
 // FIXME: Use AWS configuration use this function, else use the path only
 // import configuration from "./configs/app.config";
 
@@ -50,6 +51,7 @@ import { winstonLoggerConfig } from "./configs/winston.config";
     MailModule,
     UserModule,
     HealthModule,
+    S3Module,
   ],
   controllers: [AppController],
   providers: [

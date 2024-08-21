@@ -22,7 +22,7 @@ async function loadSecretsFromAWS() {
       region: process.env.AWS_REGION, // AWS region from environment variables
       credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY, // AWS access key from environment variables
-        secretAccessKey: process.env.AWS_SECRET_KEY, // AWS secret key from environment variables
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // AWS secret access key from environment variables
       },
     });
 
