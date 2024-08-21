@@ -11,15 +11,23 @@ This is a template that includes the authentication, authorisation, google-authe
 1. NestJS
 2. TypeORM
 3. PostgreSQL
-4. HealthCheck(terminus)
-5. Joi
-6. Swagger / OpenAPI
-7. Mailer Client setup with Pug
-8. Authentication (JWT, Passport Local, Oauth2.0)
-9. Authorization (RBAC)
-10. Throttler Setup
-11. Server and security Config
-12. Migrations
+
+## Features Implemented
+1. **Joi Env Validations**
+2. **Server and Security Config**
+3. **Authentication**
+   - Credentials (Local Passport)
+   - JWT (Passport JWT)
+   - OAuth2.0 (Google Passport)
+4. **Authorization (RBAC)**
+5. **Swagger / OpenAPI**
+6. **HealthCheck (Terminus)**
+7. **Throttler Setup**
+8. **Winston Logger (File-Based)**
+9. **Mailer Client Setup with Pug**
+10. **Migrations**
+11. **AWS Secret Manager**
+
 
 - All implemented for a generic User Schema
 - signup, reset password, forget password etc are implemented too along with 2FA for emails
@@ -102,7 +110,6 @@ This App is [MIT licensed](LICENSE).
 ## TODO
 1. Shortlived JWT Access Token
 2. Refresh Token
-3. Secret Manager
 4. S3 Bucket
 5. Caching
 6. Websockets
