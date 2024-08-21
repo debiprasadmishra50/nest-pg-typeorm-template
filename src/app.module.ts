@@ -12,7 +12,9 @@ import { MailModule } from "./mail/mail.module";
 import { PostgreSQLDatabaseModule } from "./database/postgresql.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
-import { winstonLoggerConfig } from "./winston.config";
+import { winstonLoggerConfig } from "./configs/winston.config";
+// FIXME: Use AWS configuration use this function, else use the path only
+// import configuration from "./configs/app.config";
 
 /**
  * It is the root module for the application in we import all feature modules and configure modules and packages that are common in feature modules. Here we also configure the middlewares.
@@ -29,6 +31,8 @@ import { winstonLoggerConfig } from "./winston.config";
       isGlobal: true,
       validationSchema: envSchema,
       // validationOptions: { allowUnknown: false, abortEarly: true },
+      // FIXME: Use AWS configuration use this function, uncomment this option
+      // load: [configuration],
     }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],

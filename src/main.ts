@@ -11,7 +11,7 @@ import { json, urlencoded } from "express";
 import { ConfigService } from "@nestjs/config";
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import dataSource from "./ormconfig";
+import dataSource from "./configs/ormconfig";
 
 /**
  * function for bootstraping the nest application
