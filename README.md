@@ -111,11 +111,10 @@ This App is [MIT licensed](LICENSE).
 ## TODO
 1. Shortlived JWT Access Token
 2. Refresh Token
-4. S3 Bucket
-5. Caching
-6. Websockets
-7. SSE
-8. Logic of Google and Normal Login Edge Cases
-9. Improved Logging
-10. 
+3. Caching
+4. Websockets
+5. SSE
+6. Logic of Google and Normal Login Edge Cases
+7. Improved Logging
+
 
