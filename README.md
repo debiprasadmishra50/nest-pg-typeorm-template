@@ -25,8 +25,9 @@ This is a template that includes the authentication, authorisation, google-authe
 7. **Throttler Setup**
 8. **Winston Logger (File-Based)**
 9. **Mailer Client Setup with Pug**
-10. **Migrations**
+10. **TypeORM Migrations**
 11. **AWS Secret Manager**
+12. **AWS S3 bucket Upload**
 
 
 - All implemented for a generic User Schema
