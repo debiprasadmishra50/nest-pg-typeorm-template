@@ -1,5 +1,4 @@
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./entities/user.entity";
@@ -19,6 +18,7 @@ export class UserService {
   ) {}
 
   async getAllUsers(): Promise<User[]> {
+    this.logger.log("getting all users data", UserService.name);
     const users = await this.userRepository.find();
 
     return users;
@@ -31,31 +31,31 @@ export class UserService {
    * @returns updated user information
    */
   async updateUserData(updateUserDto: UpdateUserDto, user: User) {
-    const { fullName } = updateUserDto;
+    let isUpdated: boolean = false;
 
-    const names = fullName.split(" ");
-
-    const firstName = names.splice(0, 1)[0];
-    const lastName = names.join(" ");
-
-    this.logger.log(`Checking if user exists`);
+    this.logger.log(`Checking if user exists`, UserService.name);
     const currentUser = await this.userRepository.findOne({ where: { id: user.id } });
 
     if (!currentUser) throw new NotFoundException("User Not Found");
 
-    this.logger.log(`Create Updated User`);
-    if (firstName) currentUser.firstName = firstName;
-    if (lastName) currentUser.lastName = lastName;
+    this.logger.log(`Attempting to update user data`, UserService.name);
+    Object.keys(currentUser).forEach((key) => {
+      if (updateUserDto[key] !== undefined && currentUser[key] !== updateUserDto[key]) {
+        currentUser[key] = updateUserDto[key];
+        isUpdated = true;
+        this.logger.log(`Updated ${key} from ${currentUser[key]} to ${updateUserDto[key]}`, UserService.name);
+      }
+    });
 
-    if (currentUser.firstName === user.firstName && currentUser.lastName === user.lastName) {
-      this.logger.log(`User didn't update any data`);
+    if (!isUpdated) {
+      this.logger.log(`User didn't update any data`, UserService.name);
       return user;
     }
 
-    this.logger.log(`Save Updated User`);
+    this.logger.log(`Save Updated User`, UserService.name);
     await this.userRepository.save(currentUser);
 
-    this.logger.log("Sending update Confirmation Mail");
+    this.logger.log("Sending update Confirmation Mail", UserService.name);
     this.mailService.sendConfirmationOnUpdatingUser(user);
 
     return currentUser;
