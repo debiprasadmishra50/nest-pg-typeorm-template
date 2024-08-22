@@ -29,6 +29,10 @@ export class CreateUserDto {
    * Last Name of user
    */
   @ApiProperty({ required: true, description: "Last Name of user" })
+  @IsNotAdmin()
+  @MaxLength(20, { message: "Last Name exceeds given length" })
+  @MinLength(1, { message: "Last name has to be of length 1" })
+  @IsAlpha()
   @IsString({ message: "Last name must be a string" })
   @IsNotEmpty({ message: "Last name can not be empty" })
   lastName: string;
