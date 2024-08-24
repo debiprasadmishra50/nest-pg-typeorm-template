@@ -115,6 +115,5 @@ This App is [MIT licensed](LICENSE).
 4. Websockets
 5. SSE
 6. Logic of Google and Normal Login Edge Cases
-7. Improved Logging
 
 
