@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
@@ -13,9 +13,9 @@ import { User } from "./entities/user.entity";
  *      TypeOrmModule - it is an ORM and enables easy access to database.
  */
 @Module({
-  imports: [AuthModule, TypeOrmModule.forFeature([User]), MailModule],
+  imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([User]), MailModule],
   controllers: [UserController],
   providers: [UserService],
-  exports: [],
+  exports: [UserService],
 })
 export class UserModule {}

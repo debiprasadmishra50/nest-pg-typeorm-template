@@ -1,6 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import {
   HealthCheck,
   HealthCheckService,
@@ -20,12 +20,21 @@ export class HealthController {
 
   @Get("database")
   @HealthCheck()
+  @ApiOperation({
+    summary: "Check Database Connection",
+    description: "Performs a health check to verify the database connection is active and responsive.",
+  })
   checkDatabase() {
     return this.health.check([() => this.dbSQL.pingCheck(this.configService.get<string>("DATABASE"))]);
   }
 
   @Get("memory")
   @HealthCheck()
+  @ApiOperation({
+    summary: "Check Memory Usage",
+    description:
+      "Performs a health check to monitor memory usage, including heap memory and RSS (Resident Set Size).",
+  })
   checkMemory() {
     const memSize = 150 * 1024 * 1024; // 150MB
 

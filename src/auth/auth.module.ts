@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
 import { ConfigModule, ConfigService } from "@nestjs/config";
@@ -10,6 +10,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { MailModule } from "../mail/mail.module";
 import { GoogleStrategy } from "./strategies/google.strategy";
 import { User } from "../user/entities/user.entity";
+import { UserModule } from "../user/user.module";
 
 /**
  * It is a feature module where we keep the controller, service and other code related to authentication and  we import other modules and configure modules and packages that are being used in this module.
@@ -37,6 +38,7 @@ import { User } from "../user/entities/user.entity";
         };
       },
     }),
+    forwardRef(() => UserModule),
     MailModule,
   ],
   controllers: [AuthController],
