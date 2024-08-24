@@ -70,10 +70,9 @@ export class AuthService {
    * @returns user object containing information about user and token which is used for authentication.
    */
   async signup(createUserDto: CreateUserDto, req: Request): Promise<{ user: User; token: string }> {
-    this.logger.log("Create and Save user", "AuthService");
+    this.logger.log(`Create and Save user with email ${createUserDto.email}`, AuthService.name);
 
     let { password } = createUserDto;
-
     password = await argon2hash(password); // NOTE: Hash the password
 
     try {
@@ -84,15 +83,14 @@ export class AuthService {
       user.activeToken = sha256(activateToken);
 
       user = await this.userRepository.save(user);
+      this.logger.log("User Created", AuthService.name);
 
-      this.logger.log("User Created", "AuthService");
-
-      this.logger.log("Login the user and send the token and mail", "AuthService");
+      this.logger.log("Login the user and send the token and mail", AuthService.name);
       const token: string = await this.signTokenSendEmailAndSMS(user, req, activateToken);
 
       return { user, token };
     } catch (err) {
-      this.logger.error(err.message, err.stack, "AuthService");
+      this.logger.error(err.message, err.stack, AuthService.name);
       if (err.code === "23505") throw new ConflictException("Email already exists");
       else throw new InternalServerErrorException(err.message);
     }
@@ -104,15 +102,15 @@ export class AuthService {
    * @returns true | false
    */
   async activateAccount(token: string) {
-    this.logger.log("Generating token", "AuthService");
+    this.logger.log("Generating token", AuthService.name);
     const hashedToken = sha256(token);
 
-    this.logger.log("Searching User with activation token", "AuthService");
+    this.logger.log("Searching User with activation token", AuthService.name);
     const user = await this.userRepository.findOne({ where: { activeToken: hashedToken } });
 
     if (!user) throw new BadRequestException("Invalid token or token expired");
 
-    this.logger.log("Activate Account", "AuthService");
+    this.logger.log("Activate Account", AuthService.name);
     user.active = true;
     user.activeToken = null;
 
@@ -121,7 +119,7 @@ export class AuthService {
     //NOTE: FOR UI
     const profile = `${this.FR_HOST}/accounts/profile`;
 
-    this.logger.log("Send account activation mail to user", "AuthService");
+    this.logger.log("Send account activation mail to user", AuthService.name);
     this.mailService.sendUserAccountActivationMail(user, profile);
 
     return true;
@@ -135,10 +133,10 @@ export class AuthService {
   async loginPassport(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
 
-    this.logger.log("Searching User with provided email", "AuthService");
+    this.logger.log("Searching User with provided email", AuthService.name);
     const user = await this.userRepository.findOne({ where: { email } });
 
-    this.logger.log("Verifying User", "AuthService");
+    this.logger.log("Verifying User", AuthService.name);
     if (user && (await argon2verify(user.password, password))) {
       return user;
     }
@@ -165,7 +163,7 @@ export class AuthService {
     if (sendMail) {
       token = await this.signTokenSendEmailAndSMS(user, req, activateToken);
     } else {
-      this.logger.log("Existing User, Logging In", "AuthService");
+      this.logger.log("Existing User, Logging In", AuthService.name);
       token = await this.signToken(user);
     }
 
@@ -182,14 +180,14 @@ export class AuthService {
    * @returns signed token which is used for authentication.
    */
   async forgotPassword(email: string, req: Request) {
-    this.logger.log("Searching User with provided email", "AuthService");
+    this.logger.log("Searching User with provided email", AuthService.name);
     const user = await this.userRepository.findOne({ where: { email } });
 
     if (!user) {
       throw new NotFoundException("User Not Found");
     }
 
-    this.logger.log("Creating password reset token", "AuthService");
+    this.logger.log("Creating password reset token", AuthService.name);
     const { user: updatedUser, resetToken } = this.createPasswordResetToken(user);
 
     await this.userRepository.save(updatedUser);
@@ -200,7 +198,7 @@ export class AuthService {
     // const resetURL = `${thcreateOrFindUserGoogleis.FR_HOST}/auth/reset-password/${resetToken}`;
 
     try {
-      this.logger.log("Sending password reset token mail", "AuthService");
+      this.logger.log("Sending password reset token mail", AuthService.name);
       this.mailService.sendForgotPasswordMail(email, resetURL);
 
       return true;
@@ -219,15 +217,15 @@ export class AuthService {
    * @returns a string "valid token" if the token is valid.
    */
   async verifyToken(token: string) {
-    this.logger.log("Generating hash from token", "AuthService");
+    this.logger.log("Generating hash from token", AuthService.name);
     const hashedToken = sha256(token);
 
-    this.logger.log("Retrieving user", "AuthService");
+    this.logger.log("Retrieving user", AuthService.name);
     const user: User = await this.userRepository.findOne({ where: { passwordResetToken: hashedToken } });
 
     if (!user) throw new BadRequestException("The user belonging to this token doesn't exist");
 
-    this.logger.log("Checking if token is valid", "AuthService");
+    this.logger.log("Checking if token is valid", AuthService.name);
     const resetTime: number = +user.passwordResetExpires;
     if (Date.now() >= resetTime) {
       throw new BadRequestException("Invalid token or token expired");
@@ -245,37 +243,37 @@ export class AuthService {
   async resetPassword(token: string, resetPassword: ResetPasswordDto) {
     const { password, passwordConfirm } = resetPassword;
 
-    this.logger.log("Checking Password equality", "AuthService");
+    this.logger.log("Checking Password equality", AuthService.name);
     if (password !== passwordConfirm) {
       throw new NotAcceptableException("password and passwordConfirm should match");
     }
 
-    this.logger.log("Generating hash from token", "AuthService");
+    this.logger.log("Generating hash from token", AuthService.name);
     const hashedToken = sha256(token);
 
-    this.logger.log("Retrieving user", "AuthService");
+    this.logger.log("Retrieving user", AuthService.name);
     const user: User = await this.userRepository.findOne({ where: { passwordResetToken: hashedToken } });
 
     if (!user) throw new BadRequestException("Invalid token or token expired");
 
-    this.logger.log("Checking if token is valid", "AuthService");
+    this.logger.log("Checking if token is valid", AuthService.name);
     const resetTime: number = +user.passwordResetExpires;
     if (Date.now() >= resetTime) {
       throw new BadRequestException("Invalid token or token expired");
     }
 
-    this.logger.log("Hashing the password", "AuthService");
+    this.logger.log("Hashing the password", AuthService.name);
     user.password = await argon2hash(password);
 
     user.passwordResetExpires = null;
     user.passwordResetToken = null;
 
-    this.logger.log("Update the user password", "AuthService");
+    this.logger.log("Update the user password", AuthService.name);
     const updatedUser: User = await this.userRepository.save(user);
 
     const newToken: string = await this.signToken(updatedUser);
 
-    this.logger.log("Sending reset password confirmation mail", "AuthService");
+    this.logger.log("Sending reset password confirmation mail", AuthService.name);
     this.mailService.sendPasswordResetConfirmationMail(user);
 
     return { updatedUser, newToken };
@@ -290,7 +288,7 @@ export class AuthService {
   async updateMyPassword(updateMyPassword: UpdateMyPasswordDto, user: User) {
     const { passwordCurrent, password, passwordConfirm } = updateMyPassword;
 
-    this.logger.log("Verifying current password from user", "AuthService");
+    this.logger.log("Verifying current password from user", AuthService.name);
     if (!(await argon2verify(user.password, passwordCurrent))) {
       throw new UnauthorizedException("Invalid password");
     }
@@ -303,17 +301,17 @@ export class AuthService {
       throw new BadRequestException("Password does not match with passwordConfirm");
     }
 
-    this.logger.log("Masking Password", "AuthService");
+    this.logger.log("Masking Password", AuthService.name);
     const hashedPassword = await argon2hash(password);
     user.password = hashedPassword;
 
-    this.logger.log("Saving Updated User", "AuthService");
+    this.logger.log("Saving Updated User", AuthService.name);
     await this.userRepository.save(user);
 
-    this.logger.log("Sending password update mail", "AuthService");
+    this.logger.log("Sending password update mail", AuthService.name);
     this.mailService.sendPasswordUpdateEmail(user);
 
-    this.logger.log("Login the user and send the token again", "AuthService");
+    this.logger.log("Login the user and send the token again", AuthService.name);
     const token: string = await this.signToken(user);
 
     return { user, token };
@@ -336,21 +334,21 @@ export class AuthService {
    * @returns updated user object containing user information and token which is used for authentication.
    */
   async sendAccountActivationMail(user: User, req: Request) {
-    this.logger.log("Creating token", "AuthService");
+    this.logger.log("Creating token", AuthService.name);
     const activateToken: string = tokenCreate();
 
-    this.logger.log("Generating and saving token hash", "AuthService");
+    this.logger.log("Generating and saving token hash", AuthService.name);
     user.activeToken = sha256(activateToken);
 
     await this.userRepository.save(user);
 
-    this.logger.log("Creating activation url", "AuthService");
+    this.logger.log("Creating activation url", AuthService.name);
     const activeURL = `${req.protocol}://${req.get("host")}/api/v1/auth/activate/${activateToken}`;
     //NOTE: FOR UI
     // const activeURL = `${req.protocol}://${req.get("host")}/activate/${activateToken}`;
     // const activeURL = `${this.FR_HOST}/auth/activate/${activateToken}`;
 
-    this.logger.log("Sending activtion mail", "AuthService");
+    this.logger.log("Sending activtion mail", AuthService.name);
     this.mailService.sendUserActivationToken(user, activeURL);
 
     return "success";
@@ -363,7 +361,7 @@ export class AuthService {
    */
   async signToken(user: any): Promise<string> {
     const payload: JwtPayload = { id: user.id };
-    this.logger.log("Signing token", "AuthService");
+    this.logger.log("Signing token", AuthService.name);
 
     return this.jwtService.sign(payload);
   }
@@ -383,7 +381,7 @@ export class AuthService {
     // const activeURL = `${req.protocol}://${req.get("host")}/activate/${activateToken}`;
     // const activeURL = `${this.FR_HOST}/auth/activate/${activateToken}`;
 
-    this.logger.log("Sending welcome email", "AuthService");
+    this.logger.log("Sending welcome email", AuthService.name);
     this.mailService.sendUserConfirmationMail(user, activeURL);
 
     // TODO: Send confirmation SMS to new user using Twilio

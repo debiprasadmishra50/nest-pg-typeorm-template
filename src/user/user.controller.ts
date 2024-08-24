@@ -1,12 +1,4 @@
-import {
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Get,
-  Patch,
-  UseGuards,
-  UseInterceptors,
-} from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, UseGuards } from "@nestjs/common";
 import {
   ApiTags,
   ApiBearerAuth,
@@ -18,7 +10,7 @@ import {
 import { GetUser } from "../auth/decorators/get-user.decorator";
 import { User } from "./entities/user.entity";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { UpdatedUserResponseDto } from "./dto-response/user-response.dto";
+import { UserResponseDto } from "./dto-response/user-response.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { AccountActivatedGuard } from "./guards/account-activation.guard";
 import { UserService } from "./user.service";
@@ -29,7 +21,6 @@ import { UserService } from "./user.service";
  */
 @Controller("users")
 @UseGuards(JwtAuthGuard)
-// @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags("User")
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: "In case user is not logged in" })
@@ -78,11 +69,29 @@ export class UserController {
     description: "Api to update user details.",
     summary: "Api to update user details.",
   })
-  @ApiOkResponse({ description: "Update User Data", type: UpdatedUserResponseDto })
+  @ApiOkResponse({ description: "Update User Data", type: UserResponseDto })
   @ApiForbiddenResponse({ description: "If the account is not activated" })
   async updateUserDetails(@Body() updateUserDto: UpdateUserDto, @GetUser() user: User) {
     const updatedUser = await this.userService.updateUserData(updateUserDto, user);
 
     return { status: "success", data: updatedUser };
+  }
+
+  /**
+   * Get API - "/:id" - Get data about an user
+   * @param id user profile information about an user
+   * @returns returns the user object.
+   * @throws UnauthorizedException with message in case user is not logged in.
+   */
+  @Get(":id")
+  @ApiOperation({
+    description: "Api to fetch profile details of an user",
+    summary: "Api to fetch profile details of an user",
+  })
+  @ApiOkResponse({ description: "Get data about current logged in user", type: UserResponseDto })
+  async getUserById(@Param("id") id: string) {
+    const user = await this.userService.getUserById(id);
+
+    return { status: "success", data: user };
   }
 }

@@ -50,7 +50,7 @@ import { GoogleAuthGuard } from "./guards/google-auth.guard";
  */
 @Controller("auth")
 // @UseInterceptors(ClassSerializerInterceptor)
-@ApiTags("auth")
+@ApiTags("Auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -65,7 +65,7 @@ export class AuthController {
   @Post("signup")
   @ApiOperation({
     description: "Api to register new users.",
-    summary: "Api to register new users. It taked (fullname, email and password) as input",
+    summary: "Api to register new users. It takes (firstName, lastName, email and password) as input",
   })
   @ApiCreatedResponse({
     description: "The user is successfully created",

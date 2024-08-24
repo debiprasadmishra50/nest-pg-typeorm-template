@@ -56,6 +56,8 @@ export class S3Service {
    *
    */
   async getPreSignedUrl(fileName: string, primaryPath: PrimaryPaths, expiresIn: number = 300) {
+    this.logger.log(`generating pre-signed-url for file ${fileName}`, S3Service.name);
+
     const date = new Date().toISOString().split("T")[0].replace(/-/g, "/");
     const fileNameArr = fileName.split(".");
     const originalFileName = fileNameArr[0].replace(/[^a-zA-Z0-9]/g, "_");
@@ -76,6 +78,8 @@ export class S3Service {
   }
 
   async deleteObject(imageName: string) {
+    this.logger.log(`deleting file ${imageName}`, S3Service.name);
+
     const params: DeleteObjectCommandInput = {
       Bucket: this.configService.get<string>("AWS_PUBLIC_BUCKET_NAME"),
       Key: imageName,

@@ -6,11 +6,12 @@ import { JwtPayload } from "../dto/jwt-payload.dto";
 import { ConfigService } from "@nestjs/config";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { UserService } from "../../user/user.service";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly userService: UserService,
     private readonly configService: ConfigService
   ) {
     super({
@@ -22,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload): Promise<User> {
     const { id } = payload;
-    const user: User = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userService.getUserById(id);
 
     if (!user) {
       throw new UnauthorizedException("The user belonging to this token does no longer exists.");
