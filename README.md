@@ -113,7 +113,6 @@ This App is [MIT licensed](LICENSE).
 2. Refresh Token
 3. Caching
 4. Websockets
-5. SSE
 6. Logic of Google and Normal Login Edge Cases
 
 
