@@ -1,12 +1,4 @@
-import {
-  Body,
-  ClassSerializerInterceptor,
-  Controller,
-  Get,
-  Patch,
-  UseGuards,
-  UseInterceptors,
-} from "@nestjs/common";
+import { Body, Controller, Get, Patch, UseGuards } from "@nestjs/common";
 import {
   ApiTags,
   ApiBearerAuth,
@@ -29,7 +21,6 @@ import { UserService } from "./user.service";
  */
 @Controller("users")
 @UseGuards(JwtAuthGuard)
-// @UseInterceptors(ClassSerializerInterceptor)
 @ApiTags("User")
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: "In case user is not logged in" })

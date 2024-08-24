@@ -8,7 +8,7 @@ import { PreSignedUrlDTO } from "./dto/pre-signed-url.dto";
 @ApiTags("S3")
 @ApiBearerAuth()
 @Controller("s3")
-// @UseGuards(JwtAuthGuard, AccountActivatedGuard)
+@UseGuards(JwtAuthGuard, AccountActivatedGuard)
 export class S3Controller {
   constructor(private readonly s3Service: S3Service) {}
 
