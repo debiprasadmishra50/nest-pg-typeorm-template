@@ -20,6 +20,7 @@ function countFiles(dir, fileExtension) {
 const start = Date.now();
 
 exec("tsc --project tsconfig.build.json", (error, stdout, stderr) => {
+  // exec("npm run build", (error, stdout, stderr) => {
   const end = Date.now();
   const timeTaken = (end - start) / 1000;
 
