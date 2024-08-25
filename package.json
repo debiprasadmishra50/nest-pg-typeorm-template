@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "nest-pg-typeorm-template-tsc-compiler",
   "version": "0.0.1",
   "description": "Nest Starter Template",
   "author": "Debi Prasad Mishra",
@@ -29,7 +29,8 @@
     "migration:generate": "npm run typeorm -- migration:generate ./src/database/migrations/Migration -p",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "prepare": "husky"
+    "prepare": "husky",
+    "compile-time": "node measure-compile-time.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.635.0",
