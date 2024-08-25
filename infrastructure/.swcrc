@@ -1,0 +1,30 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "module": {
+    "type": "commonjs",
+
+    "strict": false,
+    "strictMode": true,
+    "lazy": false,
+    "noInterop": false
+  },
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "dynamicImport": true,
+      "privateMethod": true,
+      "decorators": true,
+      "decoratorsBeforeExport": true,
+      "importMeta": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "target": "es2021",
+    "loose": false,
+    "externalHelpers": false,
+    "keepClassNames": true
+  },
+  "minify": false
+}
