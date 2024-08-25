@@ -14,6 +14,7 @@ import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
 import { winstonLoggerConfig } from "./configs/winston.config";
 import { S3Module } from './s3/s3.module';
+import { SseModule } from './sse/sse.module';
 // FIXME: Use AWS configuration use this function, else use the path only
 // import configuration from "./configs/app.config";
 
@@ -52,6 +53,7 @@ import { S3Module } from './s3/s3.module';
     UserModule,
     HealthModule,
     S3Module,
+    SseModule,
   ],
   controllers: [AppController],
   providers: [
