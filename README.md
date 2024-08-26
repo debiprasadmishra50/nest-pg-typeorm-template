@@ -14,6 +14,11 @@ This is a template that includes the authentication, authorisation, google-authe
 2. **SWC Compiler**
 ![SWC-Compiler](./resources/images/swc-compiler.png)
 
+## How to run
+1. Git Clone the repo **for this branch**
+2. execute `npm i`
+3. Execute `node measure-compile-time.js`
+
 ## Tech Stack
 
 1. NestJS
