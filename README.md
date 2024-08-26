@@ -87,7 +87,7 @@ $ npm run test:cov
 
 ## Migration
 
-      Avoid synchronizing with the database for every DB change, instead use a migration system to prevent loss of data or any unwanted behavior
+_**Avoid synchronizing with the database for every DB change, instead use a migration system to prevent loss of data or any unwanted behavior**_
 
 1. Perform any schema change in any entity file
 2. Run command `npm run migration:generate` to generate a new migration file with changes from your entities
