@@ -174,6 +174,26 @@ export class AuthService {
   }
 
   /**
+   * used by Apple Authentication
+   * NOTE:
+   * You need to deploy the backend and frontend first, if locally, then use ngrok
+   * @param req http request object containing user details provided by google.
+   * @returns user object containing information about user and token which is used for authentication.
+   */
+  async appleLogin(token: string) {
+    if (!token) throw new BadRequestException("Token Not Found");
+
+    const { sub: userId, email, auth_time: loginTime } = this.jwtService.decode(token);
+
+    console.log("DECODED:", { userId, email, loginTime });
+
+    return {
+      user: { userId, email, loginTime },
+      token,
+    };
+  }
+
+  /**
    * sends password reset token to given email for resetting password if user account associated to that email is found.
    * @param email email associated with user account
    * @param req HTTP request object.

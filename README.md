@@ -28,6 +28,7 @@ This is a template that includes the authentication, authorisation, google-authe
    - Credentials (Local Passport)
    - JWT (Passport JWT)
    - OAuth2.0 (Google Passport)
+   - Apple OAuth _(Partially Implemented)_
 4. **Authorization (RBAC)**
 5. **Swagger / OpenAPI**
 6. **HealthCheck (Terminus)**

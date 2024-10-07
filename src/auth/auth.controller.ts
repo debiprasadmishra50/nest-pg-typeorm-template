@@ -148,6 +148,39 @@ export class AuthController {
     // NOTE: For UI:${req.protocol}://${req.get("host")}/auth/google_oauth2
   }
 
+  // NOTE: FIXME: TODO:
+  /**
+   * You need to deploy the backend and frontend first, if locally, then use ngrok
+   *
+   * Refer this Repository for Frontend Integration
+   * {@link https://github.com/debiprasadmishra50/react-oauth2-google.git}
+   *
+   * Get API - "/apple/callback" - used for login through apple account. It is a webhook hit by Frontend with user information and jwt token sent from Apple to frontend
+   * @param req HTTP request object containing user information from apple.
+   * @returns created or logged in user object, token for authentication and response status.
+   * @throws ConflictException if the user with that email already exists.
+   * @throws UnauthorizedException if credentials are invalid.
+   */
+  @Post("apple/callback")
+  @ApiOkResponse({
+    description: "Created or found Existing user and Login successful",
+    type: UserResponseDto,
+  })
+  @ApiUnauthorizedResponse({ description: "Invalid credentials" })
+  @ApiConflictResponse({ description: "User Already Exists" })
+  // @ApiOAuth2(["email", "profile"])
+  async loginAppleCallback(@Req() req: Request) {
+    const { token: appleToken } = req.body;
+
+    const { user, token } = await this.authService.appleLogin(appleToken);
+
+    return {
+      status: "success",
+      data: user,
+      token,
+    };
+  }
+
   /**
    * Get API - "/google/callback" - used for login through google account. It is a webhook hit by Google Auth services with user information.
    * @param req HTTP request object containing user information from google.
