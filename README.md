@@ -2,6 +2,15 @@
 
 This is a template that includes the authentication, authorisation, google-authentication, mailing functionality along with database communication
 
+## NOTE
+1. Refer `master` branch for TypeScript Compiler 
+   
+   **[Codebase](https://github.com/debiprasadmishra50/nest-pg-typeorm-template/tree/master)**
+
+2. Refer `swc-compiler` branch for SWC Compiler 
+
+   **[Codebase](https://github.com/debiprasadmishra50/nest-pg-typeorm-template/tree/swc-compiler)**
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository..
@@ -19,6 +28,7 @@ This is a template that includes the authentication, authorisation, google-authe
    - Credentials (Local Passport)
    - JWT (Passport JWT)
    - OAuth2.0 (Google Passport)
+   - Apple OAuth _(Partially Implemented)_
 4. **Authorization (RBAC)**
 5. **Swagger / OpenAPI**
 6. **HealthCheck (Terminus)**
@@ -28,6 +38,8 @@ This is a template that includes the authentication, authorisation, google-authe
 10. **TypeORM Migrations**
 11. **AWS Secret Manager**
 12. **AWS S3 bucket Upload**
+14. **_SWC-Compiler_**
+
 
 
 - All implemented for a generic User Schema
