@@ -125,7 +125,7 @@ async function bootstrap() {
   app.use((req: any, res: any, next: any) => {
     res.setHeader(
       "Permissions-Policy",
-      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=()'
+      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=(), microphone=()'
     );
     next();
   });
