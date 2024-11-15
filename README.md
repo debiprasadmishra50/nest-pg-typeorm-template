@@ -38,6 +38,7 @@ This is a template that includes the authentication, authorisation, google-authe
 10. **TypeORM Migrations**
 11. **AWS Secret Manager**
 12. **AWS S3 bucket Upload**
+13. **Session Management** with express-session
 14. **_SWC-Compiler_**
 
 
