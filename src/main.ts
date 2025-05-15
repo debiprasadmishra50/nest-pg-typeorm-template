@@ -12,6 +12,8 @@ import { ConfigService } from "@nestjs/config";
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
 import dataSource from "./configs/ormconfig";
+import { CorsOptions } from "@nestjs/common/interfaces/external/cors-options.interface";
+import { expressSession } from "./session-management";
 
 /**
  * function for bootstraping the nest application
@@ -39,7 +41,17 @@ async function bootstrap() {
     type: VersioningType.URI,
   });
 
-  app.enableCors();
+  const corsOptions: CorsOptions = {
+    // FIXME:
+    origin: ["http://localhost:3000"], // Only allow requests from yourdomain.com
+    methods: ["GET, POST, PATCH, DELETE"], // Limit methods to only the ones your API requires
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow only specific headers
+    credentials: true, // Allow credentials (cookies, authorization headers) if needed
+    optionsSuccessStatus: 204, // Set the success status code for preflight requests
+    maxAge: 86400, // Cache the preflight response for 24 hours (in seconds)
+  };
+
+  app.enableCors(corsOptions);
   app.use(cookieParser());
   app.use(compression());
 
@@ -52,10 +64,14 @@ async function bootstrap() {
   const ignoreMethods =
     configService.get<string>("STAGE") == "dev"
       ? ["GET", "HEAD", "OPTIONS", "DELETE", "POST", "PATCH", "PUT"] // for devlopment we ignoring all
-      : ["GET", "HEAD", "OPTIONS", "DELETE"];
+      : ["GET", "HEAD", "OPTIONS"];
   app.use(
     csurf({
-      cookie: { httpOnly: true, secure: true },
+      cookie: {
+        httpOnly: true, // Prevent JavaScript access to the CSRF cookie
+        secure: process.env.NODE_ENV === "PROD", // Set to secure only in production
+        sameSite: "strict", // Restrict the cookie to same-site requests
+      },
       ignoreMethods,
     })
   );
@@ -76,24 +92,29 @@ async function bootstrap() {
             "http://127.0.0.1:3000/",
             "https://*.cloudflare.com",
             "https://polyfill.io",
-            `https: 'unsafe-inline'`,
+            `https: 'unsafe-inline'`, // FIXME: use script-src CSP NONCES
+            /* 
+              CSP NONCES https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src#unsafe_inline
+             */
           ],
           styleSrc: ["'self'", "https:", "http:", "'unsafe-inline'"],
-          imgSrc: ["'self'", "data:", "blob:", "validator.swagger.io"],
+          imgSrc: ["'self'", "blob:", "validator.swagger.io"],
           fontSrc: ["'self'", "https:", "data:"],
           childSrc: ["'self'", "blob:"],
           styleSrcAttr: ["'self'", "'unsafe-inline'", "http:"],
           frameSrc: ["'self'"],
         },
       },
+      // you don't control the link on the pages, or know that you don't want to leak information to other domains
       dnsPrefetchControl: { allow: false }, // Changed based on the last middleware to disable DNS prefetching
-      frameguard: { action: "deny" },
-      hidePoweredBy: true,
-      ieNoOpen: true,
-      noSniff: true,
-      permittedCrossDomainPolicies: { permittedPolicies: "none" },
-      referrerPolicy: { policy: "no-referrer" },
-      xssFilter: true,
+      frameguard: { action: "deny" }, // Disable clickjacking
+      hidePoweredBy: true, // Hides the X-Powered-By header to make the server less identifiable.
+      ieNoOpen: true, // Prevents Internet Explorer from executing downloads in the site’s context.
+      noSniff: true, // Prevents browsers from MIME type sniffing, reducing exposure to certain attacks.
+      permittedCrossDomainPolicies: { permittedPolicies: "none" }, // Prevents Adobe Flash and Acrobat from loading cross-domain data.
+      referrerPolicy: { policy: "no-referrer" }, // Protects against referrer leakage.
+      xssFilter: true, // Enables the basic XSS protection in older browsers.
+      // Configures Cross-Origin settings to strengthen resource isolation and mitigate certain side-channel attacks.
       crossOriginEmbedderPolicy: true,
       crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
       crossOriginResourcePolicy: { policy: "same-site" },
@@ -104,7 +125,7 @@ async function bootstrap() {
   app.use((req: any, res: any, next: any) => {
     res.setHeader(
       "Permissions-Policy",
-      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=()'
+      'fullscreen=(self), camera=(), geolocation=(self "https://*example.com"), autoplay=(), payment=(), microphone=()'
     );
     next();
   });
@@ -135,6 +156,10 @@ async function bootstrap() {
       },
     });
   }
+
+  // FIXME:
+  // Session Management
+  // expressSession(app);
 
   const port = configService.get<string>("PORT") || 3000;
   await app.listen(port, () => {

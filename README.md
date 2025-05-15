@@ -27,7 +27,7 @@ This is a template that includes the authentication, authorisation, google-authe
 3. **Authentication**
    - Credentials (Local Passport)
    - JWT (Passport JWT)
-   - OAuth2.0 (Google Passport)
+   - OAuth2.0 (Google Passport, Apple OAuth) [[Apple OAuth Frontend Repo](https://github.com/debiprasadmishra50/react-oauth2-google.git)]
    - Apple OAuth _(Partially Implemented)_
 4. **Authorization (RBAC)**
 5. **Swagger / OpenAPI**
@@ -38,6 +38,7 @@ This is a template that includes the authentication, authorisation, google-authe
 10. **TypeORM Migrations**
 11. **AWS Secret Manager**
 12. **AWS S3 bucket Upload**
+13. **Session Management** with express-session
 14. **_SWC-Compiler_**
 
 
