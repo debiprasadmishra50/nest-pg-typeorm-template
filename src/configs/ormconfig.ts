@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { join } from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
 
+// FIXME: Fix it for AWS Secret Manager
 config({ path: `.env.stage.${process.env.STAGE || "dev"}` });
 
 const configService = new ConfigService();
@@ -19,7 +20,7 @@ export const ormconfig: DataSourceOptions = {
   synchronize: false,
   // dropSchema: true,
   // retryAttempts: 1,
-  migrations: [join(__dirname, "database", "migrations", "*{.ts,.js}")],
+  migrations: [join(__dirname, "..", "database", "migrations", "*{.ts,.js}")],
   //   cli: {
   //     migrationsDir: join(__dirname, "migrations"),
   //   },
