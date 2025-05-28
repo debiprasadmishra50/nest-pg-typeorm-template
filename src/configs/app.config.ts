@@ -12,7 +12,7 @@ export default async () => {
 /**
  * This function fetches secrets from AWS Secrets Manager and stores them as environment variables.
  */
-async function loadSecretsFromAWS() {
+export async function loadSecretsFromAWS() {
   try {
     // Create an instance of ConfigService to manage configuration
     const configService = new ConfigService();
@@ -42,7 +42,7 @@ async function loadSecretsFromAWS() {
         // Set each secret in the ConfigService
         configService.set(key, secrets[key]);
         // Optionally, you could also set it in process.env
-        // process.env[key = secrets[key];
+        // process.env[key] = secrets[key];
 
         // Log the key-value pair (commented out for production)
         // console.log({ key, value: secrets[key] });

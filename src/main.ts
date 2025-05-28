@@ -1,3 +1,4 @@
+// import configuration from "./configs/app.config";
 import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from "@nestjs/common";
 import { NestFactory, Reflector } from "@nestjs/core";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
@@ -11,14 +12,23 @@ import { json, urlencoded } from "express";
 import { ConfigService } from "@nestjs/config";
 import { AppModule } from "./app.module";
 import { NestExpressApplication } from "@nestjs/platform-express";
-import dataSource from "./configs/ormconfig";
 import { CorsOptions } from "@nestjs/common/interfaces/external/cors-options.interface";
 import { expressSession } from "./session-management";
+// FIXME: have it if you are using secret manager
+// import { loadSecretsFromAWS } from "./configs/app.config";
+import { createDataSource } from "./configs/ormconfig";
 
 /**
  * function for bootstraping the nest application
  */
 async function bootstrap() {
+  // Load AWS secrets before anything else
+  // FIXME: have it if you are using secret manager
+  // await loadSecretsFromAWS();
+
+  // Create the data source after secrets are loaded
+  const dataSource = createDataSource();
+
   /*
    * Run Migrations
    */
@@ -26,6 +36,7 @@ async function bootstrap() {
     await dataSource.initialize();
   }
   await dataSource.runMigrations();
+  await dataSource.destroy();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
