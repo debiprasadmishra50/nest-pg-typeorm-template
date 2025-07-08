@@ -13,10 +13,8 @@ import { PostgreSQLDatabaseModule } from "./database/postgresql.module";
 import { UserModule } from "./user/user.module";
 import { HealthModule } from "./health/health.module";
 import { winstonLoggerConfig } from "./configs/winston.config";
-import { S3Module } from './s3/s3.module';
-import { SseModule } from './sse/sse.module';
-// FIXME: Use AWS configuration use this function, else use the path only
-// import configuration from "./configs/app.config";
+import { S3Module } from "./s3/s3.module";
+import { SseModule } from "./sse/sse.module";
 
 /**
  * It is the root module for the application in we import all feature modules and configure modules and packages that are common in feature modules. Here we also configure the middlewares.
@@ -33,8 +31,6 @@ import { SseModule } from './sse/sse.module';
       isGlobal: true,
       validationSchema: envSchema,
       // validationOptions: { allowUnknown: false, abortEarly: true },
-      // FIXME: Use AWS configuration use this function, uncomment this option
-      // load: [configuration],
     }),
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
