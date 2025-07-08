@@ -43,3 +43,6 @@ export function createOrmConfig(): DataSourceOptions & TypeOrmModuleOptions {
 export function createDataSource() {
   return new DataSource(createOrmConfig());
 }
+
+// For Migrations
+export const dataSource = createDataSource();
