@@ -4,6 +4,10 @@ import { config } from "dotenv";
 import { join } from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
 
+// FIXME: For AWS Secretmanager create a script to fetch the envs first to have migration capabilities
+config({ path: join(__dirname, '..', '..', `.env.${process.env.STAGE}`) });
+
+
 export function createOrmConfig(): DataSourceOptions & TypeOrmModuleOptions {
   const configService = new ConfigService();
 
