@@ -8,7 +8,7 @@ export class ApiResponseDto<T = any> {
   data: T;
 }
 
-export class CountResposeDto {
+export class CountApiResponseDto<T = any> extends ApiResponseDto<T> {
   @ApiProperty({ description: 'Response Count', required: true })
   count: number;
 }

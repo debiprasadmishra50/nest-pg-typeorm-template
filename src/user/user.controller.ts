@@ -24,7 +24,7 @@ import { UserService } from "./user.service";
 @ApiTags("User")
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: "In case user is not logged in" })
-// FIXME: Use the BaseResponseDto in all the response types
+// FIXME: Use the BaseResponseDto and ApiSuccessResponse in all the response types
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
