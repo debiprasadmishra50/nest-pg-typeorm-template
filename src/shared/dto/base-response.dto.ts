@@ -6,7 +6,9 @@ export class ApiResponseDto<T = any> {
 
   @ApiProperty({ description: 'Response data', required: true })
   data: T;
+}
 
-  @ApiProperty({ description: 'Error message', required: false })
-  message?: string;
+export class CountResposeDto {
+  @ApiProperty({ description: 'Response Count', required: true })
+  count: number;
 }
