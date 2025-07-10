@@ -14,6 +14,7 @@ import { UserResponseDto } from "./dto-response/user-response.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { AccountActivatedGuard } from "./guards/account-activation.guard";
 import { UserService } from "./user.service";
+import { ApiResponseDto, CountApiResponseDto } from "../shared/dto/base-response.dto";
 
 /**
  * UserController is responsible for handling incoming requests specific to User and returning responses to the client.
@@ -24,7 +25,6 @@ import { UserService } from "./user.service";
 @ApiTags("User")
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: "In case user is not logged in" })
-// FIXME: Use the BaseResponseDto and ApiSuccessResponse in all the response types
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -33,8 +33,8 @@ export class UserController {
     description: "Api to fetch details of all users.",
     summary: "Api to fetch details of all users.",
   })
-  @ApiOkResponse({ description: "Get list of all users in Database", type: User, isArray: true })
-  async getAllUsers() {
+  @ApiOkResponse({ description: "Get list of all users in Database", type: CountApiResponseDto<User[]>, isArray: true })
+  async getAllUsers(): Promise<CountApiResponseDto<User[]>> {
     const users = await this.userService.getAllUsers();
 
     return { status: "success", count: users.length, data: users };
@@ -51,9 +51,9 @@ export class UserController {
     description: "Api to fetch details of logged in user.",
     summary: "Api to fetch details of logged in user.",
   })
-  @ApiOkResponse({ description: "Get data about current logged in user", type: User })
-  async getUser(@GetUser() user: User): Promise<User> {
-    return user;
+  @ApiOkResponse({ description: "Get data about current logged in user", type: ApiResponseDto<User> })
+  async getUser(@GetUser() user: User): Promise<ApiResponseDto<User>> {
+    return { status: "success", data: user };
   }
 
   /**
@@ -70,9 +70,9 @@ export class UserController {
     description: "Api to update user details.",
     summary: "Api to update user details.",
   })
-  @ApiOkResponse({ description: "Update User Data", type: UserResponseDto })
+  @ApiOkResponse({ description: "Update User Data", type: ApiResponseDto<User> })
   @ApiForbiddenResponse({ description: "If the account is not activated" })
-  async updateUserDetails(@Body() updateUserDto: UpdateUserDto, @GetUser() user: User) {
+  async updateUserDetails(@Body() updateUserDto: UpdateUserDto, @GetUser() user: User): Promise<ApiResponseDto<User>> {
     const updatedUser = await this.userService.updateUserData(updateUserDto, user);
 
     return { status: "success", data: updatedUser };
@@ -89,8 +89,8 @@ export class UserController {
     description: "Api to fetch profile details of an user",
     summary: "Api to fetch profile details of an user",
   })
-  @ApiOkResponse({ description: "Get data about current logged in user", type: UserResponseDto })
-  async getUserById(@Param("id") id: string) {
+  @ApiOkResponse({ description: "Get data about current logged in user", type: ApiResponseDto<User> })
+  async getUserById(@Param("id") id: string): Promise<ApiResponseDto<User>> {
     const user = await this.userService.getUserById(id);
 
     return { status: "success", data: user };
