@@ -10,7 +10,6 @@ import {
 import { GetUser } from "../auth/decorators/get-user.decorator";
 import { User } from "./entities/user.entity";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { UserResponseDto } from "./dto-response/user-response.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { AccountActivatedGuard } from "./guards/account-activation.guard";
 import { UserService } from "./user.service";
