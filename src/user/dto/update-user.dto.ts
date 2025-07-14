@@ -9,7 +9,7 @@ export class UpdateUserDto {
   /**
    * First Name of user
    */
-  @ApiProperty({ required: true, description: "First Name of user" })
+  @ApiPropertyOptional({ required: false, description: "First Name of user" })
   @IsNotAdmin()
   @MaxLength(20, { message: "First Name exceeds given length" })
   @MinLength(1, { message: "First name has to be of length 1" })
@@ -21,7 +21,7 @@ export class UpdateUserDto {
   /**
    * Last Name of user
    */
-  @ApiProperty({ required: true, description: "Last Name of user" })
+  @ApiPropertyOptional({ required: false, description: "Last Name of user" })
   @IsNotAdmin()
   @MaxLength(20, { message: "Last Name exceeds given length" })
   @MinLength(1, { message: "Last name has to be of length 1" })

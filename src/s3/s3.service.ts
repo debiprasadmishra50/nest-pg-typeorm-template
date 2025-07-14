@@ -77,24 +77,50 @@ export class S3Service {
     return { url, key: imageName, method: "PUT", expiresIn: `${expiresIn}s` };
   }
 
-  async deleteObject(imageName: string) {
-    this.logger.log(`deleting file ${imageName}`, S3Service.name);
+  /**
+   * Deletes an object from S3 bucket
+   *
+   * @param imageName - The key/path of the object to delete
+   * @returns true if deletion was successful, false otherwise
+   * @throws S3ServiceException if there's an error with the S3 service
+   */
+  async deleteObject(imageName: string): Promise<boolean> {
+    this.logger.log(`Deleting file ${imageName}`, S3Service.name);
 
-    const params: DeleteObjectCommandInput = {
-      Bucket: this.configService.get<string>("AWS_PUBLIC_BUCKET_NAME"),
-      Key: imageName,
-    };
+    try {
+      const params: DeleteObjectCommandInput = {
+        Bucket: this.configService.get<string>('AWS_S3_BUCKET_NAME'),
+        Key: imageName,
+      };
 
-    const command = new DeleteObjectCommand(params);
-    const result = await this.s3.send(command);
+      const command = new DeleteObjectCommand(params);
+      const result = await this.s3.send(command);
 
-    if (result.DeleteMarker) return true;
-    else
+      // For versioned buckets, DeleteMarker will be true
+      // For non-versioned buckets, a successful delete returns 204 No Content
+      const isSuccess = result.DeleteMarker === true || result.$metadata?.httpStatusCode === 204;
+
+      if (isSuccess) {
+        this.logger.log(`Successfully deleted ${imageName}`, S3Service.name);
+        return true;
+      } else {
+        this.logger.warn(`Deletion of ${imageName} may not have been successful`, S3Service.name);
+        return false;
+      }
+    } catch (error) {
+      // Log the error with proper context
+      this.logger.error(
+        `Failed to delete object ${imageName}: ${error.message}`,
+        error.stack,
+        S3Service.name,
+      );
+
+      // Throw a properly formatted exception
       throw new S3ServiceException({
-        message: "File not deleted",
-        name: "File Not Deleted",
-        $fault: "client",
-        $metadata: {},
+        message: `Failed to delete file: ${error.message}`,
+        name: 'S3DeleteObjectError',
+        $fault: 'client',
+        $metadata: error.$metadata || {},
       });
-  }
+    }
 }

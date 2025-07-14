@@ -17,6 +17,7 @@ import { expressSession } from "./session-management";
 // FIXME: have it if you are using secret manager
 // import { loadSecretsFromAWS } from "./configs/app.config";
 import { createDataSource } from "./configs/ormconfig";
+import { runMigrations } from "./migration-runner";
 
 /**
  * function for bootstraping the nest application
@@ -28,15 +29,9 @@ async function bootstrap() {
 
   // Create the data source after secrets are loaded
   const dataSource = createDataSource();
+  // Run Auto Migrations
+  await runMigrations(dataSource, false); // Set to true to exit on migration failure
 
-  /*
-   * Run Migrations
-   */
-  if (!dataSource.isInitialized) {
-    await dataSource.initialize();
-  }
-  await dataSource.runMigrations();
-  await dataSource.destroy();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
