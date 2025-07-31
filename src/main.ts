@@ -18,6 +18,8 @@ import { expressSession } from "./session-management";
 // import { loadSecretsFromAWS } from "./configs/app.config";
 import { createDataSource } from "./configs/ormconfig";
 import { runMigrations } from "./migration-runner";
+import { swaggerDarkModeMiddleware } from "./shared/middlewares/swagger-dark-mode.middleware";
+import { SWAGGER_CUSTOM_CSS } from "./shared/constants/swagger-styles";
 
 /**
  * function for bootstraping the nest application
@@ -142,6 +144,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ transform: true, stopAtFirstError: true }));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
+   // Apply Swagger dark mode middleware
+  app.use('/api', swaggerDarkModeMiddleware);
+
   /* FIXME:
     ##########################
     ##### Set-up Swagger #####
@@ -158,8 +163,10 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config, { ignoreGlobalPrefix: false });
     SwaggerModule.setup("api", app, document, {
       swaggerOptions: {
-        tagsSorter: "alpha",
+        tagsSorter: 'alpha',
+        docExpansion: 'none',
       },
+      customCss: SWAGGER_CUSTOM_CSS,
     });
   }
 
