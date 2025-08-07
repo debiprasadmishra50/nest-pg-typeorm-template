@@ -36,7 +36,7 @@ async function bootstrap() {
 
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
+    // cors: true,
     bodyParser: true,
     logger: ["error", "fatal", "log", "verbose", "warn", "debug"],
   });
@@ -50,13 +50,17 @@ async function bootstrap() {
   });
 
   const corsOptions: CorsOptions = {
-    // FIXME:
-    origin: ["http://localhost:3000"], // Only allow requests from yourdomain.com
-    methods: ["GET, POST, PATCH, DELETE"], // Limit methods to only the ones your API requires
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow only specific headers
-    credentials: true, // Allow credentials (cookies, authorization headers) if needed
-    optionsSuccessStatus: 204, // Set the success status code for preflight requests
-    maxAge: 86400, // Cache the preflight response for 24 hours (in seconds)
+    origin: [
+      'http://localhost:3000',
+      // FIXME: Add Other Source URLs // Only allow requests from yourdomain.com
+    ],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT', 'OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization','Cache-Control','X-Requested-With'],
+    exposedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'X-Requested-With'],
+    credentials: true,
+    optionsSuccessStatus: 204,
+    maxAge: 86400,
+    preflightContinue: false,
   };
 
   app.enableCors(corsOptions);
