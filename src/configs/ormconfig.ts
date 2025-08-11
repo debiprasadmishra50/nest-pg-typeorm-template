@@ -31,8 +31,9 @@ export function createOrmConfig(): DataSourceOptions & TypeOrmModuleOptions {
     migrationsTableName: "migrations",
     migrationsRun: true,
     maxQueryExecutionTime: 1000,
-    logging: true,
-    logger: "file",
+    ...(configService.get<string>('STAGE') === 'dev'
+      ? { logging: true, logger: 'file' }
+      : { logging: false }),
     // ssl: false,
     // extra: {
     //   ssl: {
